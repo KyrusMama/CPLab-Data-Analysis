@@ -229,7 +229,7 @@ def grouped_spikes_events_histogram(file_name, *args, index=-1, baseline=[b'BLAN
     """
     trains = dp.get_spike_train(file_name)
     event_times, event_labels = dp.get_events(file_name)
-
+    print(event_times)
     grouped_times, grouped_labels = group_events(event_times, event_labels, skip_last_event=skip_last_event)
 
     ttal = [0]
@@ -297,5 +297,5 @@ name_list = [r'E:\sniffer_data_spring_2019\ParameterTest_OE2_022119_odors.smr',
 # (spikes_events_histogram(fname, bins_btw=30))
 # averaged_spike_events_histogram(name_list, bins_btw=40, subset=True)
 # print(dp.get_spike_train(fname))
-# grouped_spikes_events_histogram(fname, bins_btw=30, skip_last_event=True)
+grouped_spikes_events_histogram(fname, bins_btw=30, skip_last_event=True)
 # grouped_spikes_events_histogram(name_list[0], name_list[1], bins_btw=30, skip_last_event=True)

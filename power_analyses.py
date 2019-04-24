@@ -5,6 +5,8 @@ from filters import butter_lowpass_filter, iir_notch
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import spike2_data_puller as dp
+
 #Written by Jesse Werth
 
 def welch_psd(data, fs, plot=True, window='hanning', overlap=0.5, len_seg=None, axis=-1):
@@ -40,14 +42,13 @@ def welch_psd(data, fs, plot=True, window='hanning', overlap=0.5, len_seg=None, 
         PSD estimates of the time series in `signal`.
     """
 #     data = data.reshape(data.shape[0],)
-    if len_seg == None:
+    if len_seg is None:
         overlap = overlap * 256
     else:
         overlap = overlap * len_seg
     freqs, psd = signal.welch(data, fs=fs, noverlap=overlap, nperseg=len_seg,
               window=window, nfft=None, detrend='constant',
               return_onesided=True, scaling='density', axis=axis)
-    print(freqs, psd)
     if plot:
         plt.plot(freqs, psd)
         plt.show()
@@ -122,3 +123,16 @@ def welch_change_in_power(data, fs, pre, post, duration=60*s, low=20*Hz, high=55
     print("Change in power: " + str(np.round(db,3)) + " decibels (" + str(np.round(perc, 3)) + " %)")
 
 
+def clip_data(data, fs, start, end):
+    sf = int(np.floor(fs * start))
+    ff = int(np.floor(fs * end))
+    return data[sf:ff]
+
+# filename = r'E:\sniffer_data_spring_2019\ParameterTest_OE1_041919_odors.smr'
+#
+# data, fs = dp.get_data(filename, 'Sniff')
+# data = np.array(data)
+# d1 = clip_data(data, fs, 616, 631)
+# d2 = clip_data(data, fs, 741, 756)
+# welch_psd(d1, fs)
+# welch_psd(d2, fs)
